@@ -32,6 +32,8 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	// h2 추가
 	runtimeOnly 'com.h2database:h2'
+	//jpa 쿼리파라미터 확인
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 }
 
 tasks.named('test') {
