@@ -1,6 +1,7 @@
 package com.example.likelion13th.domain;
 
 import com.example.likelion13th.domain.Mapping.ProductOrders;
+import com.example.likelion13th.domain.value.ShippingAddress;
 import com.example.likelion13th.enums.DeliverStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,5 +34,8 @@ public class Orders extends BaseTimeEntity {
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     private Coupon coupon;
+
+    @Embedded
+    private ShippingAddress shippingAddress;
 }
 
