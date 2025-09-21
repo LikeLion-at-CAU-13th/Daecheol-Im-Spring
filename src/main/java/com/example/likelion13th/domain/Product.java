@@ -38,5 +38,12 @@ public class Product extends BaseTimeEntity {
     public void reduceStock(int amount){
         this.stock -= amount;
     }
+
+    public void update(String name, Integer price, Integer stock, String description) {
+        this.name = name;
+        this.price = price;
+        this.stock = stock;
+        this.description = description;
+    }
 }
 
