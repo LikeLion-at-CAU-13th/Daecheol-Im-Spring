@@ -1,6 +1,5 @@
 package com.example.likelion13th.controller;
 
-import com.example.likelion13th.domain.Member;
 import com.example.likelion13th.dto.request.ProductRequestDto;
 import com.example.likelion13th.dto.response.ProductResponseDto;
 import com.example.likelion13th.service.ProductService;
