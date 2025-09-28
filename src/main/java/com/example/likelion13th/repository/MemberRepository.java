@@ -17,6 +17,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     // 성인 + 이름 오름차순 + 페이징
     Page<Member> findByAgeGreaterThanEqualOrderByNameAsc(int age, Pageable pageable);
 
+    // 이름 중복 검사 쿼리
+    boolean existsByName(String name);
+
 }
 
 /*@Repository
