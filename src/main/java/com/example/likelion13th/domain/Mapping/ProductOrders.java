@@ -28,5 +28,7 @@ public class ProductOrders {
     private Orders orders;
 
     private Integer quantity; // 구매 수량
+
+    public void setOrders(Orders orders){ this.orders = orders; }
 }
 
