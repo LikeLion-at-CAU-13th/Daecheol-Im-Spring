@@ -17,7 +17,9 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String name;
+    private String password;
     private String address;
     private String email;
     private String phoneNumber;
@@ -42,7 +44,7 @@ public class Member {
 
     @Builder
     public Member(String name, String address, String email, String phoneNumber,
-                  Role role, Boolean isAdmin, Integer deposit, Integer age) {
+                  Role role, Boolean isAdmin, Integer deposit, Integer age, String password) {
         this.name = name;
         this.address = address;
         this.email = email;
@@ -51,6 +53,7 @@ public class Member {
         this.isAdmin = isAdmin;
         this.deposit = deposit;
         this.age = age;
+        this.password = password;
     }
 
     public boolean isSeller(){

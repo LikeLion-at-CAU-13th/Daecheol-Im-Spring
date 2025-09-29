@@ -1,12 +1,14 @@
 package com.example.likelion13th.service;
 
 import com.example.likelion13th.domain.Member;
+import com.example.likelion13th.dto.request.JoinRequestDto;
 import com.example.likelion13th.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,5 +34,21 @@ public class MemberService {
     // 이름 prefix 필터링
     public List<Member> getMemberByNamePrefix(String prefix){
         return memberRepository.findByNameStartingWith(prefix);
+    }
+
+    // 비밀번호 인코더 DI(생성자 주입)
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public void join(JoinRequestDto joinRequestDto){
+        // 해당 name이 이미 존재하는 경우
+        if (memberRepository.existsByName(joinRequestDto.getName())){
+            throw new IllegalArgumentException("이미 존재하는 회원 이름입니다: " + joinRequestDto.getName());
+        }
+
+        // 유저 객체 생성
+        Member member = joinRequestDto.toEntity(bCryptPasswordEncoder);
+
+        // 유저 정보 저장
+        memberRepository.save(member);
     }
 }
