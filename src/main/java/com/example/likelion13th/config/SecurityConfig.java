@@ -1,5 +1,6 @@
 package com.example.likelion13th.config;
 
+import com.example.likelion13th.service.CustomOAuth2UserService;
 import com.example.likelion13th.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,6 +23,7 @@ import java.util.Collections;
 public class SecurityConfig {
 
     private final CustomUserDetailsService customUserDetailsService; // UserDetailsService DI. 의존성 주입
+    private final CustomOAuth2UserService customOAuth2UserService; // 추가
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -29,11 +31,22 @@ public class SecurityConfig {
         http
                 .cors((SecurityConfig::corsAllow)) // CORS 설정
                 .csrf(AbstractHttpConfigurer::disable) // 비활성화
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.disable())
+                )
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/join", "/login").permitAll() // 회원가입, 로그인은 모두 허용
-                        .requestMatchers("/**").authenticated()) // 나머지는 인증된 사용자만 혀용
-                .formLogin(AbstractHttpConfigurer::disable)
-                .logout(Customizer.withDefaults())
+                        .requestMatchers("/join", "/login",
+                                "/oauth2/**", "/login/oauth2/**",
+                                "/h2-console/**", "/error").permitAll()
+                        .anyRequest().authenticated())
+                //        .requestMatchers("/**").authenticated()) // 나머지는 인증된 사용자만 혀용
+                        .oauth2Login(oauth -> oauth
+                                .userInfoEndpoint(userInfo -> userInfo
+                                        .userService(customOAuth2UserService)
+                                )
+                        )
+                //.formLogin(AbstractHttpConfigurer::disable) // login 설정
+                //.logout(Customizer.withDefaults()) // logout 설정
                 .userDetailsService(customUserDetailsService)
         ;
         return http.build();

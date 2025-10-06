@@ -17,3 +17,34 @@ spring:
   sql:
     init:
       mode: always # 애플리케이션 시작 시 스크립트 초기화 (기본값: embedded)
+  # google Oauth
+  config:
+    import: optional:application-secret.yml
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: GOOGLE_CLIENT_ID
+            client-secret: GOOGLE_CLIENT_SECRET
+            scope:
+              - email
+              - profile
+            redirect-uri: "http://localhost:8080/login/oauth2/code/google"
+
+          kakao:
+            client-id: KAKAO_CLIENT_ID         # Kakao REST API 키
+            client-secret: KAKAO_CLIENT_SECRET  # 선택(설정했다면 입력)
+            client-name: Kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
+            client-authentication-method: client_secret_post   # 문제 생기면 basic로 바꿔봐
+            scope: # 동의항목에서 체크한 것과 맞춰야 실제로 내려옴
+              - profile_nickname
+
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id  # Kakao의 고유 사용자 키
