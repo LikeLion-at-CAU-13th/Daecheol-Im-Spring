@@ -38,9 +38,10 @@ spring:
             client-name: Kakao
             authorization-grant-type: authorization_code
             redirect-uri: "http://localhost:8080/login/oauth2/code/kakao"
-            client-authentication-method: client_secret_post   # 문제 생기면 basic로 바꿔봐
+            client-authentication-method: client_secret_post
             scope: # 동의항목에서 체크한 것과 맞춰야 실제로 내려옴
               - profile_nickname
+              - account_email
 
         provider:
           kakao:
