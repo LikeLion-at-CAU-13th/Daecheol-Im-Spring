@@ -1,5 +1,6 @@
 package com.example.likelion13th.controller;
 
+import com.example.likelion13th.config.PrincipalHandler;
 import com.example.likelion13th.dto.request.ProductRequestDto;
 import com.example.likelion13th.dto.response.ProductResponseDto;
 import com.example.likelion13th.service.ProductService;
@@ -34,6 +35,18 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponseDto> getProductById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
+    }
+
+    // 내가 판매하는 상품 목록 토큰으로 조회
+    @GetMapping("/my")
+    public ResponseEntity<List<ProductResponseDto>> getMyProducts() {
+        //토큰에서 username 추출
+        String username = PrincipalHandler.getUsernameFromPrincipal();
+
+        // 내 상품 목록 조회
+        List<ProductResponseDto> products = productService.getMyProducts(username);
+
+        return ResponseEntity.ok(products);
     }
 
     @PutMapping("/{id}")

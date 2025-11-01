@@ -52,6 +52,27 @@ public class ProductService {
         return ProductResponseDto.fromEntity(product);
     }
 
+    // 토큰의 username으로 상품 목록 조회
+    @Transactional(readOnly = true)
+    public List<ProductResponseDto> getMyProducts(String username) {
+        // username으로 판매자 찾기
+        Member seller = memberRepository.findByName(username)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        // 판매자 권한 확인
+        if (!seller.isSeller()) {
+            throw new NotSellerException();
+        }
+
+        // 판매자의 상품 목록 조회
+        List<Product> products = productRepository.findBySeller(seller);
+
+        // DTO로 변환
+        return products.stream()
+                .map(ProductResponseDto::fromEntity)
+                .toList();
+    }
+
     @Transactional
     public ProductResponseDto updateProduct(Long productId, ProductUpdateRequestDto dto) {
         // 판매자 조회

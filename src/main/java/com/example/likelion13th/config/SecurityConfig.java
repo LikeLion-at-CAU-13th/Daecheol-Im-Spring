@@ -41,10 +41,12 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable) // 기본 로그인 페이지 없애기
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/join", "/login").permitAll() // 모두 허용
+                        .requestMatchers("/h2-console/**").permitAll() // 콘솔 접근 허용
                         .requestMatchers("/**").authenticated()) // 인증된 사용자만 허용
-//                .headers(headers -> headers
-//                        .frameOptions(frameOptions -> frameOptions.disable())
-//                )
+
+                .headers(headers -> headers
+                        .frameOptions(frameOptions -> frameOptions.disable())
+                )
 //                .authorizeHttpRequests((auth) -> auth
 //                        .requestMatchers("/join", "/login",
 //                                "/oauth2/**", "/login/oauth2/**",
