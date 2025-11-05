@@ -49,3 +49,7 @@ spring:
             token-uri: https://kauth.kakao.com/oauth/token
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id  # Kakao의 고유 사용자 키
+
+
+jwt:
+  secret: ${JWT_SECRET:}
